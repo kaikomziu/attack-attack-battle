@@ -56,20 +56,36 @@ function updateFighter(f, input, opponent) {
   if (f.invulnTimer > 0) f.invulnTimer--;
   if (f.cdSpecial > 0) f.cdSpecial--;
 
-  const canAct = fighterCanAct(f);
+  // ジャンプ/復帰ジャンプは、無敵回避とその隙・被弾・KO以外ならどの行動中でも割り込める(攻撃を出しっぱなしでジャンプできないバグの修正)
+  const jumpLocked = f.state === 'hitstun' || f.state === 'dodgeInvincible' || f.state === 'dodgeRecover' || f.state === 'ko';
+  let jumped = false;
 
-  if (canAct) {
-    if (f.grounded) f.facing = opponent.x >= f.x ? 1 : -1;
-    const { forwardHeld, backwardHeld } = forwardBackward(f, input);
-
-    if (input.shiftHeld && input.downJustPressed) {
-      f.state = 'dodgeInvincible'; f.timer = 60; f.vx = 0;
-    } else if (input.shiftHeld && input.upJustPressed && f.canHighJump) {
+  if (!jumpLocked && input.upJustPressed) {
+    if (input.shiftHeld && f.canHighJump) {
       f.canHighJump = false;
       f.vy = HIGHJUMP_VEL;
       f.vx = (input.left ? -4 : input.right ? 4 : 0) * 1.5;
       f.state = 'highjumpLock'; f.timer = 18;
       f.grounded = false;
+      jumped = true;
+    } else if (!input.shiftHeld && (f.grounded || f.airJumpsUsed < 1)) {
+      if (f.grounded) { f.vy = JUMP_VEL; f.grounded = false; }
+      else { f.vy = AIR_JUMP_VEL; f.airJumpsUsed++; }
+      f.state = 'jump';
+      jumped = true;
+    }
+  }
+
+  const canAct = !jumped && fighterCanAct(f);
+
+  if (jumped) {
+    // このtickはジャンプ発生のみ処理し、他の状態遷移はスキップする
+  } else if (canAct) {
+    if (f.grounded) f.facing = opponent.x >= f.x ? 1 : -1;
+    const { forwardHeld, backwardHeld } = forwardBackward(f, input);
+
+    if (input.shiftHeld && input.downJustPressed) {
+      f.state = 'dodgeInvincible'; f.timer = 60; f.vx = 0;
     } else if (f.grounded && input.shiftHeld && forwardHeld) {
       startMove(f, 'punch');
     } else if (f.grounded && input.shiftHeld && backwardHeld) {
@@ -87,10 +103,6 @@ function updateFighter(f, input, opponent) {
         f.state = f.grounded ? 'walk' : f.state;
       } else {
         if (f.grounded) { f.vx = 0; f.state = input.down ? 'crouch' : 'idle'; }
-      }
-      if (input.upJustPressed && !input.shiftHeld) {
-        if (f.grounded) { f.vy = JUMP_VEL; f.grounded = false; f.state = 'jump'; }
-        else if (f.airJumpsUsed < 1) { f.vy = AIR_JUMP_VEL; f.airJumpsUsed++; f.state = 'jump'; }
       }
     }
   } else if (f.state === 'backdash') {
