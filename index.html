@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>ATTACK ATTACK BATTLE - 殴り合い格闘アクション</title>
+<meta name="description" content="オリジナルファイターで殴り合うリアルタイム格闘アクション「ATTACK ATTACK BATTLE」。まずはCPU対戦から、ブラウザだけで無料プレイ。">
+<link rel="canonical" href="https://kaikomziu.github.io/attack-attack-battle/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ATTACK ATTACK BATTLE - 殴り合い格闘アクション">
+<meta property="og:description" content="オリジナルファイターで殴り合うリアルタイム格闘アクション。まずはCPU対戦から、ブラウザだけで無料プレイ。">
+<meta property="og:url" content="https://kaikomziu.github.io/attack-attack-battle/">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="css/style.css?v=0.1.0">
+</head>
+<body>
+
+<!-- ================= タイトル ================= -->
+<div id="screen-title" class="screen active">
+  <div class="title-bg"></div>
+  <button id="btn-settings-gear" class="gear-btn" title="音量設定">🔊</button>
+  <div class="title-wrap">
+    <h1 class="logo">
+      <span class="logo-a">ATTACK ATTACK</span>
+      <span class="logo-b">BATTLE</span>
+    </h1>
+    <div class="logo-tag">A A B</div>
+    <p class="subtitle">殴って、殴って、殴り勝て。オリジナルファイターの格闘アクション</p>
+    <div class="title-menu">
+      <button id="btn-quickmatch" class="btn-main">⚡ すぐに対戦(CPU)</button>
+      <button id="btn-controls" class="btn-sub">❓ 操作方法</button>
+    </div>
+    <p class="version">v<span id="verText"></span></p>
+  </div>
+</div>
+
+<!-- ================= 設定 ================= -->
+<div id="screen-settings" class="overlay hidden">
+  <div class="panel-wrap small">
+    <h2>🔊 音量設定</h2>
+    <div class="settings-row">
+      <label><input type="checkbox" id="settingsMuted"> ミュート</label>
+    </div>
+    <div class="settings-row">
+      <span>効果音の音量</span>
+      <input type="range" id="settingsVolume" min="0" max="100" value="85" class="volume-slider">
+    </div>
+    <button id="btn-settings-close" class="btn-main">とじる</button>
+  </div>
+</div>
+
+<!-- ================= 操作方法 ================= -->
+<div id="screen-controls" class="screen">
+  <div class="panel-wrap">
+    <h2>操作方法</h2>
+    <p class="hint" style="margin-top:-8px">シフトキー(Shift)+方向キーで、状況に応じた特殊アクションが出せる。</p>
+    <div class="controls-grid">
+      <div class="ctrl-card">
+        <h3>基本操作</h3>
+        <table>
+          <tr><td>移動</td><td>W A S D</td></tr>
+          <tr><td>ジャンプ(空中で2段目も可)</td><td>W</td></tr>
+          <tr><td>しゃがみ / 落下速度アップ</td><td>S</td></tr>
+          <tr><td>通常攻撃</td><td>E</td></tr>
+          <tr><td>必殺技</td><td>R</td></tr>
+        </table>
+      </div>
+      <div class="ctrl-card">
+        <h3>Shift+方向(向いている方向が基準)</h3>
+        <table>
+          <tr><td>前方に素早いラッシュパンチ(弱・連発可)</td><td>Shift+前</td></tr>
+          <tr><td>後ろに素早く後退</td><td>Shift+後</td></tr>
+          <tr><td>1秒だけ無敵の回避(その後3秒隙だらけ)</td><td>Shift+S</td></tr>
+          <tr><td>高く舞い上がる復帰ジャンプ(空中1回)</td><td>Shift+W</td></tr>
+        </table>
+      </div>
+    </div>
+    <p class="hint">キャラクターは自動で相手の方を向く。「前」は相手に近い方向、「後ろ」はその逆。</p>
+    <button class="btn-sub" id="btn-controls-back">タイトルへ戻る</button>
+  </div>
+</div>
+
+<!-- ================= バトル ================= -->
+<div id="screen-battle" class="screen">
+  <div class="battle-wrap">
+    <canvas id="canvas" width="1280" height="720"></canvas>
+  </div>
+
+  <div id="screen-results" class="overlay hidden">
+    <div class="panel-wrap small results-panel">
+      <h2 id="resultsTitle">勝者</h2>
+      <div id="resultsBody"></div>
+      <button id="btn-rematch" class="btn-main">もう一度戦う</button>
+      <button id="btn-results-title" class="btn-sub">タイトルへ</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/version.js?v=0.1.0"></script>
+<script src="js/utils.js?v=0.1.0"></script>
+<script src="js/stage.js?v=0.1.0"></script>
+<script src="js/input.js?v=0.1.0"></script>
+<script src="js/fighter.js?v=0.1.0"></script>
+<script src="js/ai.js?v=0.1.0"></script>
+<script src="js/game.js?v=0.1.0"></script>
+<script src="js/draw.js?v=0.1.0"></script>
+<script src="js/main.js?v=0.1.0"></script>
+</body>
+</html>

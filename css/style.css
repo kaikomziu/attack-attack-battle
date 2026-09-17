@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@600;700&display=swap');
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  background: #0b0708; color: #f3ecec;
+  font-family: 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+  overflow-x: hidden;
+}
+
+.screen { display: none; min-height: 100vh; position: relative; }
+.screen.active { display: block; }
+
+button { cursor: pointer; font-family: inherit; }
+
+/* ============ タイトル ============ */
+#screen-title { display: none; }
+#screen-title.active { display: flex; align-items: center; justify-content: center; }
+.title-bg {
+  position: absolute; inset: 0; overflow: hidden;
+  background:
+    radial-gradient(1100px 600px at 15% -10%, rgba(255,30,30,0.35), transparent 60%),
+    radial-gradient(900px 700px at 95% 115%, rgba(255,120,0,0.22), transparent 60%),
+    linear-gradient(160deg, #0b0708, #170a0b 55%, #0b0708);
+  animation: bgshift 12s ease-in-out infinite alternate;
+}
+.title-bg::before, .title-bg::after {
+  content: ''; position: absolute; width: 220%; height: 6px;
+  background: linear-gradient(90deg, transparent, rgba(255,60,40,0.5), transparent);
+  transform: rotate(-18deg);
+}
+.title-bg::before { top: 22%; left: -60%; }
+.title-bg::after { top: 68%; left: -60%; animation: streak 5s linear infinite; }
+@keyframes bgshift { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(-14deg); } }
+@keyframes streak { from { transform: translateX(0) rotate(-18deg); } to { transform: translateX(40px) rotate(-18deg); } }
+
+.title-wrap { position: relative; z-index: 2; text-align: center; padding: 40px 20px; }
+.logo { font-family: 'Anton', 'Rajdhani', sans-serif; margin: 0; line-height: 0.92; letter-spacing: 3px; }
+.logo-a { display: block; color: #fff; font-size: 3.4rem; text-shadow: 0 0 22px rgba(255,60,40,0.55), 0 4px 0 #4a0a08; }
+.logo-b { display: block; color: #ff3b30; font-size: 5.6rem; text-shadow: 0 0 30px rgba(255,60,40,0.75), 0 4px 0 #6b0d08; }
+.logo-tag { display: inline-block; margin-top: 6px; font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 6px; font-size: 0.9rem; color: #ffb199; }
+.subtitle { color: #d9b9b6; margin: 18px 0 30px; font-size: 1.05rem; }
+.title-menu { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.version { color: #7a5a58; margin-top: 30px; font-size: 0.8rem; }
+
+.btn-main {
+  background: linear-gradient(180deg, #ff5a3d, #e6281a);
+  border: none; color: #fff; font-weight: 700; font-size: 1.3rem;
+  padding: 16px 46px; border-radius: 50px; box-shadow: 0 8px 0 #7a1208, 0 10px 20px rgba(0,0,0,0.45);
+  transition: transform 0.12s;
+}
+.btn-main:hover:not(:disabled) { transform: translateY(-2px); }
+.btn-main:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 4px 0 #7a1208; }
+.btn-main:disabled { background: #4a4444; box-shadow: 0 8px 0 #262222; cursor: not-allowed; opacity: 0.6; }
+.btn-sub {
+  background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.22); color: #f3ecec;
+  font-size: 1rem; padding: 10px 30px; border-radius: 40px; transition: 0.15s;
+}
+.btn-sub:hover { background: rgba(255,255,255,0.16); }
+
+/* ============ 汎用パネル ============ */
+.panel-wrap { max-width: 900px; margin: 0 auto; padding: 40px 24px 60px; }
+.panel-wrap h2 { text-align: center; font-size: 2rem; margin-bottom: 20px; color: #ff6a4d; }
+.controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.ctrl-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 16px; }
+.ctrl-card h3 { margin: 0 0 10px; color: #ffb199; font-size: 1rem; }
+.ctrl-card table { width: 100%; font-size: 0.88rem; border-collapse: collapse; }
+.ctrl-card td { padding: 4px 2px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.ctrl-card td:last-child { text-align: right; color: #ffd479; font-weight: 700; }
+.hint { color: #b79c9a; font-size: 0.85rem; line-height: 1.7; text-align: center; }
+#screen-controls .btn-sub { display: block; margin: 20px auto 0; }
+
+/* ============ 設定 ============ */
+.overlay { position: fixed; inset: 0; background: rgba(10,4,4,0.82); z-index: 50; display: flex; align-items: center; justify-content: center; }
+.overlay.hidden { display: none; }
+.panel-wrap.small { background: #17100f; border-radius: 18px; border: 1px solid rgba(255,255,255,0.12); padding: 30px 30px 24px; max-width: 380px; }
+.panel-wrap.small button { display: block; width: 100%; margin-bottom: 10px; }
+.settings-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; font-size: 0.95rem; }
+.volume-slider { width: 55%; }
+.gear-btn {
+  position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.25); color: #fff; font-size: 1.2rem; z-index: 3;
+}
+
+/* ============ バトル ============ */
+#screen-battle.active { display: block; }
+.battle-wrap { position: relative; width: 100%; max-width: 1280px; margin: 0 auto; }
+#canvas { width: 100%; height: auto; aspect-ratio: 16/9; display: block; background: #000; image-rendering: -webkit-optimize-contrast; }
+.results-panel { max-width: 460px; text-align: center; }
+#resultsBody { margin-bottom: 20px; color: #d9b9b6; }
+
+@media (max-width: 640px) {
+  .logo-a { font-size: 2.2rem; } .logo-b { font-size: 3.4rem; }
+}
